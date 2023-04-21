@@ -15,7 +15,7 @@ export default function Home() {
           <TopNavigation />
         </div>
         <div className="w-full flex">
-          <div className="max-w-xs w-full max-h-[calc(100vh-20px)] px-5 custom-scrollbar
+          <div className="max-w-xs w-full max-h-screen px-5 custom-scrollbar
             scrollbar-thin scrollbar-track-black scrollbar-thumb-gray-500 overflow-y-scroll 
             scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
             <SideNavigation />

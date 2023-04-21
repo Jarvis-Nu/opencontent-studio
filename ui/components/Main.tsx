@@ -44,7 +44,7 @@ export default function Main() {
     return(
         <div className="w-full max-w-2xl">
             <div className="w-full">
-                <div className="space-y-5 h-full mb-40">
+                <div className="space-y-5 h-full mb-24">
                     <div className="space-y-2.5">
                         <h4 className="text-lg font-semibold">Name of post</h4>
                         <input

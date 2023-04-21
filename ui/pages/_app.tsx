@@ -2,18 +2,15 @@ import '../styles/globals.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import { darkTheme, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { arbitrum, goerli, mainnet, optimism, polygon } from 'wagmi/chains';
+import { arbitrum, goerli, mainnet, optimism, optimismGoerli, polygon } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
-    mainnet,
-    polygon,
     optimism,
-    arbitrum,
-    goerli
+    optimismGoerli
   ],
   [publicProvider()]
 );
