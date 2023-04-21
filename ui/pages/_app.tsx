@@ -5,6 +5,7 @@ import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import { arbitrum, goerli, mainnet, optimism, polygon } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { AppProps } from 'next/app';
+import { useEffect, useState } from 'react';
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
@@ -31,6 +32,10 @@ const wagmiClient = createClient({
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} theme={darkTheme({
@@ -40,7 +45,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         fontStack: 'system',
         overlayBlur: 'small',
       })}>
-        <Component {...pageProps} />
+        { mounted && <Component {...pageProps} /> }
       </RainbowKitProvider>
     </WagmiConfig>
   );

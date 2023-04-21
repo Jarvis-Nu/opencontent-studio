@@ -87,6 +87,9 @@ export default function Main() {
                             formats={formats}
                         />
                     </div>
+                    <div className='w-full'>
+                        <button className='w-full bg-black mt-10 border-white border p-2.5'>Publish post</button>
+                    </div>
                 </div>
             </div>
         </div>
