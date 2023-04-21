@@ -2,13 +2,43 @@ import 'react-quill/dist/quill.snow.css'
 import { useRef, useState } from "react"
 import { PhotographIcon } from "@heroicons/react/outline"
 import dynamic from 'next/dynamic'
+import { formats, modules } from '../constants/constants'
+import { Web3Storage } from "web3.storage"
+import connectContract from '../utils/connectContract'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 export default function Main() {
-    const filePickerRef: any = useRef(null)
-    const [thumbnail, setThumbnail] = useState(null)
-    function getThumbnail(e: any) {
+    const postFilePickerRef: any = useRef(null)
+    const authorFilePickerRef: any = useRef(null)
+    const [name, setName] = useState("")
+    const [authorName, setAuthorName] = useState("")
+    const [description, setDescription] = useState("")
+    const [postThumbnail, setPostThumbnail] = useState("")
+    const [postThumbnailName, setPostThumbnailName] = useState("")
+    const [postThumbnailType, setPostThumbnailType] = useState("")
+    const [authorThumbnail, setAuthorThumbnail] = useState("")
+    const [authorThumbnailName, setAuthorThumbnailName] = useState("")
+    const [authorThumbnailType, setAuthorThumbnailType] = useState("")
+    const [content, setContent] = useState("")
+    const [publishing, setPublishing] = useState(false)
+    const [published, setPublished] = useState(false)
+
+    async function uploadPostThumbnail() {
+        const blob = new Blob([postThumbnail], { type: postThumbnailType })
+        const file = [new File([blob], postThumbnailName)]
+        const client = new Web3Storage({ token: process.env.NEXT_PUBLIC_WEB3STORAGE_TOKEN || "" })
+        return await client.put(file)
+    }
+
+    async function uploadAuthorThumbnail() {
+        const blob = new Blob([authorThumbnail], { type: authorThumbnailType })
+        const file = [new File([blob], authorThumbnailName)]
+        const client = new Web3Storage({ token: process.env.NEXT_PUBLIC_WEB3STORAGE_TOKEN || "" })
+        return await client.put(file)
+    }
+    
+    function getPostThumbnail(e: any) {
         const reader = new FileReader()
         let file = e.target.files[0]
         let type = file.type
@@ -18,29 +48,54 @@ export default function Main() {
         }
         reader.onload = (readEvent: any) => {
             if (type == "image/jpeg" || type == "image/jpg" || type == "image/png" || type == "image/webp") {
-                setThumbnail(readEvent.target.result)
+                setPostThumbnail(readEvent.target.result)
+                setPostThumbnailName(name)
+                setPostThumbnailType(type)
             }
         }
     }
 
-    const modules = {
-        toolbar: [
-          [{ 'header': [1, 2, false] }],
-          ['bold', 'italic', 'underline','strike', 'blockquote'],
-          [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-          ['link', 'image'],
-          ['clean']
-        ],
+    function getAuthorThumbnail(e: any) {
+        const reader = new FileReader()
+        let file = e.target.files[0]
+        let type = file.type
+        let name = file.name
+        if (file) {
+            reader.readAsDataURL(file)
+        }
+        reader.onload = (readEvent: any) => {
+            if (type == "image/jpeg" || type == "image/jpg" || type == "image/png" || type == "image/webp") {
+                setAuthorThumbnail(readEvent.target.result)
+                setAuthorThumbnailName(name)
+                setAuthorThumbnailType(type)
+            }
+        }
     }
-    
-    const formats = [
-        'header',
-        'bold', 'italic', 'underline', 'strike', 'blockquote',
-        'list', 'bullet', 'indent',
-        'link', 'image'
-    ]
 
-    const [content, setContent] = useState("")
+    async function publishContent() {
+        setPublishing(true)
+        const contract = connectContract()
+        let postThumbnailCid = await uploadPostThumbnail()
+        let authorThumbnailCid = await uploadAuthorThumbnail()
+        let postThumbnailUrl = "https://"+postThumbnailCid+".ipfs.w3s.link/"+postThumbnailName
+        let authorThumbnailUrl = "https://"+authorThumbnailCid+".ipfs.w3s.link/"+authorThumbnailName
+        const date = new Date()
+        try {
+            if(contract) {
+                setPublishing(true)
+                const txn = await contract.createNewPost([name, description, postThumbnailUrl, authorName, authorThumbnailUrl, content, date.toLocaleDateString()])
+                if (txn) {
+                    let wait = txn.wait()
+                    if (wait) {
+                        setPublished(true)
+                    }
+                }
+            }
+        } catch (error) {
+            
+        }
+    }
+
     return(
         <div className="w-full max-w-2xl">
             <div className="w-full">
@@ -51,6 +106,7 @@ export default function Main() {
                             type="text"
                             placeholder="Enter name of post"
                             className="w-full bg-black border border-gray-500 !outline-none p-2.5 mt-2"
+                            onChange={e => setName(e.target.value)}
                         />
                     </div>
                     <div className="space-y-2.5">
@@ -58,20 +114,46 @@ export default function Main() {
                         <textarea
                             placeholder="Enter name of post"
                             className="w-full bg-black border border-gray-500 !outline-none p-2.5 mt- h-32"
+                            onChange={e => setDescription(e.target.value)}
+                        />
+                    </div>
+                    <div className="space-y-2.5">
+                        <h4 className="text-lg font-semibold">Name of Author</h4>
+                        <input
+                            type="text"
+                            placeholder="Enter name of author"
+                            className="w-full bg-black border border-gray-500 !outline-none p-2.5 mt-2"
+                            onChange={e => setAuthorName(e.target.value)}
                         />
                     </div>
                     <div>
                         {
-                            thumbnail ? <img
-                                src={thumbnail}
+                            postThumbnail ? <img
+                                src={postThumbnail}
                                 className="w-full h-96 cursor-pointer"
-                                onClick={() => setThumbnail(null)}
+                                onClick={() => setPostThumbnail("")}
                             /> : (
                                 <div className="w-full h-40 bg-black border border-gray-500 flex flex-col items-center justify-center hover:cursor-pointer"
-                                    onClick={() => filePickerRef?.current?.click()}>
+                                    onClick={() => postFilePickerRef?.current?.click()}>
                                     <PhotographIcon className="w-10 h-10 text-gray-500" />
-                                    <h4 className="text-lg font-semibold text-gray-500">Enter post thumbnail</h4>
-                                    <input type="file" ref={filePickerRef} onChange={e => getThumbnail(e)} hidden />
+                                    <h4 className="text-lg font-semibold text-gray-500">Post thumbnail</h4>
+                                    <input type="file" ref={postFilePickerRef} onChange={e => getPostThumbnail(e)} hidden />
+                                </div>
+                            )
+                        }
+                    </div>
+                    <div>
+                        {
+                            authorThumbnail ? <img
+                                src={authorThumbnail}
+                                className="w-full h-96 cursor-pointer"
+                                onClick={() => setAuthorThumbnail("")}
+                            /> : (
+                                <div className="w-full h-40 bg-black border border-gray-500 flex flex-col items-center justify-center hover:cursor-pointer"
+                                    onClick={() => authorFilePickerRef?.current?.click()}>
+                                    <PhotographIcon className="w-10 h-10 text-gray-500" />
+                                    <h4 className="text-lg font-semibold text-gray-500">Thumbnail of author</h4>
+                                    <input type="file" ref={authorFilePickerRef} onChange={e => getAuthorThumbnail(e)} hidden />
                                 </div>
                             )
                         }
@@ -88,7 +170,9 @@ export default function Main() {
                         />
                     </div>
                     <div className='w-full'>
-                        <button className='w-full bg-black mt-10 border-white border p-2.5'>Publish post</button>
+                        <button className='w-full bg-black mt-10 border-white border p-2.5' onClick={() => publishContent()}>{
+                            published ? "Published!" : publishing ? "Publishing..." : "Publish post"
+                        }</button>
                     </div>
                 </div>
             </div>

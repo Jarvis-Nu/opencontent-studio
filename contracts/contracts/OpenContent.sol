@@ -3,15 +3,15 @@ pragma solidity ^0.8.9;
 
 contract OpenContent {
 
-    event BlogPost(
+    event Post(
         string[] data,
         address owner
     );
 
-    function createNewBlogPost(
+    function createNewPost(
         string[] calldata data
     ) external {
-        emit BlogPost(data, msg.sender);
+        emit Post(data, msg.sender);
     }
 
 }
