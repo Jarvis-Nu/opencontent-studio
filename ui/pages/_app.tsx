@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react';
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
-    optimism,
     optimismGoerli
   ],
   [publicProvider()]
