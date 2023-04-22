@@ -2,8 +2,11 @@ import Head from "next/head";
 import TopNavigation from "../components/TopNavigation";
 import SideNavigation from "../components/SideNavigation";
 import Main from "../components/Main";
+import useScreenSize from 'use-screen-size';
 
 export default function Home() {
+  const size = useScreenSize()
+  if (size.width >= 640) {
   return (
     <div className="fixed w-full overflow-y-scroll scrollbar-none">
       <Head>
@@ -23,6 +26,25 @@ export default function Home() {
           </div>
         </div>
       </main>
-    </div>
-  )
+    </div> 
+    )
+  }
+  else {
+    return (
+      <div className="fixed w-full h-screen overflow-y-scroll scrollbar-none">
+        <Head>
+          <title>OpenContent studio</title>
+          <link href="/favicon.png" rel="icon" />
+        </Head>
+        <main className="relative h-screen w-full text-white bg-black">
+          <div>
+            <TopNavigation />
+          </div>
+          <div className="w-full h-full flex flex-col items-center justify-center p-2.5">
+            <p>This platform is not optimized for this screen size</p>
+          </div>
+        </main>
+      </div> 
+    )
+  }
 }
