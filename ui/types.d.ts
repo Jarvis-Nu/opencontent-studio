@@ -4,3 +4,10 @@ interface Window {
     // ethereum: ExternalProvider
     // ethereum: AbstractProvider
 }
+
+export interface PostListType {
+    data: [{
+        id: string
+        name: string
+    }]
+}

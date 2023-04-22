@@ -6,6 +6,8 @@ import { arbitrum, goerli, mainnet, optimism, optimismGoerli, polygon } from 'wa
 import { publicProvider } from 'wagmi/providers/public';
 import { AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
+import { ApolloProvider } from "@apollo/client";
+import client from "../utils/apollo-client";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
@@ -41,7 +43,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         fontStack: 'system',
         overlayBlur: 'small',
       })}>
-        { mounted && <Component {...pageProps} /> }
+        <ApolloProvider client={client}>
+          { mounted && <Component {...pageProps} /> }
+        </ApolloProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );

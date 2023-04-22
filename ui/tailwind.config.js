@@ -9,12 +9,29 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        secondary: "#6b7280"
+      }
+    },
   },
   plugins: [
-    require('tailwind-scrollbar')
+    require('tailwind-scrollbar'),
+    require("daisyui")
   ],
   variants: {
       scrollbars: ['rounded']
+  },
+  daisyui: {
+    themes: [
+      {
+        darkmode: {
+          secondary: "#6b7280",
+        },
+        lightmode: {
+          secondary: "#6b7280",
+        },
+      },
+    ],
   }
 }
