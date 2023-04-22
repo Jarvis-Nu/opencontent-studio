@@ -20,6 +20,8 @@ export default function Main() {
     const [authorThumbnail, setAuthorThumbnail] = useState("")
     const [authorThumbnailName, setAuthorThumbnailName] = useState("")
     const [authorThumbnailType, setAuthorThumbnailType] = useState("")
+    const [authorThumbnailPlaceholder, setAuthorThumbnailPlaceholder] = useState("")
+    const [postThumbnailPlaceholder, setPostThumbnailPlaceholder] = useState("")
     const [thumbnailCid, setThumbnailCid] = useState("")
     const [content, setContent] = useState("")
     const [publishing, setPublishing] = useState(false)
@@ -28,9 +30,10 @@ export default function Main() {
 
     async function uploadThumbnails() {
         const authorThumb = new Blob([authorThumbnail], { type: authorThumbnailType })
-        const postThumb = new Blob([postThumbnail], { type: postThumbnailType })
-        const files = [new File([authorThumb], authorThumbnailName), new File([postThumb], postThumbnailName)]
+        const postThumb = new Blob([postThumbnail], { type: authorThumbnailType })
+        const files = [new File([authorThumb], authorThumbnailName, { type: authorThumbnailType }), new File([postThumb], postThumbnailName, { type: postThumbnailType })]
         const client = new Web3Storage({ token: process.env.NEXT_PUBLIC_WEB3STORAGE_TOKEN || "" })
+
         let cid = await client.put(files)
         if (cid) {
             setThumbnailCid(cid)
@@ -40,7 +43,7 @@ export default function Main() {
             return false
         }
     }
-    
+
     function getPostThumbnail(e: any) {
         const reader = new FileReader()
         let file = e.target.files[0]
@@ -51,7 +54,8 @@ export default function Main() {
         }
         reader.onload = (readEvent: any) => {
             if (type == "image/jpeg" || type == "image/jpg" || type == "image/png" || type == "image/webp") {
-                setPostThumbnail(readEvent.target.result)
+                setPostThumbnail(file)
+                setPostThumbnailPlaceholder(readEvent.target.result)
                 setPostThumbnailName(name)
                 setPostThumbnailType(type)
             }
@@ -71,7 +75,8 @@ export default function Main() {
         }
         reader.onload = (readEvent: any) => {
             if (type == "image/jpeg" || type == "image/jpg" || type == "image/png" || type == "image/webp") {
-                setAuthorThumbnail(readEvent.target.result)
+                setAuthorThumbnail(file)
+                setAuthorThumbnailPlaceholder(readEvent.target.result)
                 setAuthorThumbnailName(name)
                 setAuthorThumbnailType(type)
             }
@@ -87,8 +92,6 @@ export default function Main() {
             const contract = connectContract()
             let postThumbnailUrl = "https://"+thumbnailCid+".ipfs.w3s.link/"+postThumbnailName
             let authorThumbnailUrl = "https://"+thumbnailCid+".ipfs.w3s.link/"+authorThumbnailName
-            console.log("postUrl: ", postThumbnailUrl)
-            console.log("authorUrl: ", authorThumbnailUrl)
             const date = new Date()
             try {
                 if(contract) {
@@ -183,10 +186,10 @@ export default function Main() {
                     </div>
                     <div>
                         {
-                            postThumbnail ? <img
-                                src={postThumbnail}
+                            postThumbnailPlaceholder ? <img
+                                src={postThumbnailPlaceholder}
                                 className="w-full cursor-pointer h-96"
-                                onClick={() => setPostThumbnail("")}
+                                onClick={() => setPostThumbnailPlaceholder("")}
                             /> : (
                                 <div className="flex flex-col items-center justify-center w-full h-40 bg-black border border-gray-500 hover:cursor-pointer"
                                     onClick={() => postFilePickerRef?.current?.click()}>
@@ -199,10 +202,10 @@ export default function Main() {
                     </div>
                     <div>
                         {
-                            authorThumbnail ? <img
-                                src={authorThumbnail}
+                            authorThumbnailPlaceholder ? <img
+                                src={authorThumbnailPlaceholder}
                                 className="w-full cursor-pointer h-96"
-                                onClick={() => setAuthorThumbnail("")}
+                                onClick={() => setAuthorThumbnailPlaceholder("")}
                             /> : (
                                 <div className="flex flex-col items-center justify-center w-full h-40 bg-black border border-gray-500 hover:cursor-pointer"
                                     onClick={() => authorFilePickerRef?.current?.click()}>

@@ -74,6 +74,7 @@ export async function getStaticProps({ params }: any) {
               content
               date
               authorName
+              owner
             }
           }
         `
