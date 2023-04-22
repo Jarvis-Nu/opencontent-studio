@@ -119,8 +119,10 @@ export default function Main() {
                 setPublishing(false)
                 setPublished(false)
             }
+        }).catch(() => {
+            setPublishing(false)
+            setPublished(false)
         })
-        
     }
 
     function disableButton() {
