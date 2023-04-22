@@ -40,7 +40,7 @@ export default function Home() {
           <div>
             <TopNavigation />
           </div>
-          <div className="w-full h-full flex flex-col items-center justify-center p-2.5">
+          <div className="w-full h-full flex flex-col items-center justify-center p-2.5 text-center">
             <p>This platform is not optimized for this screen size</p>
           </div>
         </main>
