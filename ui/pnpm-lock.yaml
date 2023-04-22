@@ -20,6 +20,7 @@ specifiers:
   tailwind-scrollbar: ^3.0.0
   tailwindcss: ^3.3.1
   typescript: ^4.9.4
+  use-screen-size: ^1.1.0
   wagmi: ^0.12.0
   web3.storage: ^4.5.4
 
@@ -35,6 +36,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-quill: 2.0.0_biqbaboplfbrettd7655fr4n2y
   tailwind-scrollbar: 3.0.0_tailwindcss@3.3.1
+  use-screen-size: 1.1.0_react@18.2.0
   wagmi: 0.12.11_ijvk2nltedb7s2au2t332qwpla
   web3.storage: 4.5.4
 
@@ -6309,6 +6311,15 @@ packages:
       '@types/react': 18.0.37
       react: 18.2.0
       tslib: 2.5.0
+    dev: false
+
+  /use-screen-size/1.1.0_react@18.2.0:
+    resolution: {integrity: sha512-GmHD1guO2+t5XZ1M8w/H7hlC1CO6IsD3lz1l9o+mKpmZfcm27cHKDw0J5kkj5sy3WT3hZAtno6pVaI3lRzDszA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /use-sidecar/1.1.2_24ukasupqqblpyncii3ycicuiu:
