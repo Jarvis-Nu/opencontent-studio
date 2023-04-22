@@ -23,6 +23,7 @@ export default function Main() {
     const [content, setContent] = useState("")
     const [publishing, setPublishing] = useState(false)
     const [published, setPublished] = useState(false)
+    const [unsupportedImage, setUnsupportedImage] = useState(false)
 
     async function uploadPostThumbnail() {
         const blob = new Blob([postThumbnail], { type: postThumbnailType })
@@ -52,6 +53,9 @@ export default function Main() {
                 setPostThumbnailName(name)
                 setPostThumbnailType(type)
             }
+            else {
+                setUnsupportedImage(true)
+            }
         }
     }
 
@@ -68,6 +72,9 @@ export default function Main() {
                 setAuthorThumbnail(readEvent.target.result)
                 setAuthorThumbnailName(name)
                 setAuthorThumbnailType(type)
+            }
+            else {
+                setUnsupportedImage(true)
             }
         }
     }
@@ -88,11 +95,55 @@ export default function Main() {
                     let wait = txn.wait()
                     if (wait) {
                         setPublished(true)
+                        setTimeout(() => {
+                            setPublishing(false)
+                            setPublished(false)
+                        }, 5000);
+                    }
+                    else {
+                        setPublished(false)
                     }
                 }
+                else {
+                    setPublishing(false)
+                }
+            }
+            else {
+                setPublishing(false)
             }
         } catch (error) {
-            
+            setPublishing(false)
+            setPublished(false)
+        }
+    }
+
+    function disableButton() {
+        if (published) {
+            return false
+        }
+        else if (publishing) {
+            return true
+        }
+        else if (unsupportedImage) {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+
+    function status() {
+        if (published) {
+            return "Published!"
+        }
+        else if (publishing) {
+            return "Publishing..."
+        }
+        else if (unsupportedImage) {
+            return "Error: Unsupported image"
+        }
+        else {
+            return "Publish post"
         }
     }
 
@@ -170,9 +221,10 @@ export default function Main() {
                         />
                     </div>
                     <div className='w-full'>
-                        <button className='w-full bg-black mt-10 border-white border p-2.5' onClick={() => publishContent()}>{
-                            published ? "Published!" : publishing ? "Publishing..." : "Publish post"
-                        }</button>
+                        <button className='w-full bg-black mt-10 border-white border p-2.5' onClick={() => publishContent()}
+                        disabled={disableButton()}>
+                            {status()}
+                        </button>
                     </div>
                 </div>
             </div>
