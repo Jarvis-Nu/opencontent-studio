@@ -31,17 +31,17 @@ export default function Home() {
   }
   else {
     return (
-      <div className="fixed w-full h-screen overflow-y-scroll scrollbar-none">
+      <div className="fixed w-full h-full overflow-y-scroll scrollbar-none bg-black">
         <Head>
           <title>OpenContent studio</title>
           <link href="/favicon.png" rel="icon" />
         </Head>
-        <main className="relative h-screen w-full text-white bg-black">
+        <main className="relative h-full w-full text-white">
           <div>
             <TopNavigation />
           </div>
-          <div className="w-full h-full flex flex-col items-center justify-center p-2.5 text-center">
-            <p>This platform is not optimized for this screen size</p>
+          <div className="w-full h-full flex flex-col items-center justify-center px-2.5 text-center">
+            <p className="pb-32">This platform is not optimized for this screen size</p>
           </div>
         </main>
       </div> 
