@@ -8,12 +8,12 @@ export default function Home() {
   const size = useScreenSize()
   if (size.width >= 640) {
   return (
-    <div className="fixed w-full overflow-y-scroll scrollbar-none">
+    <div className="fixed min-h-screen bg-black w-full overflow-y-scroll scrollbar-none">
       <Head>
         <title>OpenContent studio</title>
         <link href="/favicon.png" rel="icon" />
       </Head>
-      <main className="relative w-full text-white bg-black">
+      <main className="relative w-full text-white">
         <div>
           <TopNavigation />
         </div>
