@@ -33,14 +33,12 @@ export default function Main() {
         const postThumb = new Blob([postThumbnail], { type: authorThumbnailType })
         const files = [new File([authorThumb], authorThumbnailName, { type: authorThumbnailType }), new File([postThumb], postThumbnailName, { type: postThumbnailType })]
         const client = new Web3Storage({ token: process.env.NEXT_PUBLIC_WEB3STORAGE_TOKEN || "" })
-
         let cid = await client.put(files)
         if (cid) {
-            setThumbnailCid(cid)
-            return true
+            return cid
         }
         else {
-            return false
+            return ""
         }
     }
 
@@ -88,14 +86,14 @@ export default function Main() {
 
     async function publishContent() {
         setPublishing(true)
-        if (await uploadThumbnails()) {
-            const contract = connectContract()
-            let postThumbnailUrl = "https://"+thumbnailCid+".ipfs.w3s.link/"+postThumbnailName
-            let authorThumbnailUrl = "https://"+thumbnailCid+".ipfs.w3s.link/"+authorThumbnailName
-            const date = new Date()
+        await uploadThumbnails()
+        const contract = connectContract()
             try {
-                if(contract) {
+                if(contract && thumbnailCid) {
                     setPublishing(true)
+                    let postThumbnailUrl = "https://"+thumbnailCid+".ipfs.w3s.link/"+postThumbnailName
+                    let authorThumbnailUrl = "https://"+thumbnailCid+".ipfs.w3s.link/"+authorThumbnailName
+                    const date = new Date()
                     const txn = await contract.createNewPost([name, description, postThumbnailUrl, authorName, authorThumbnailUrl, content, date.toLocaleDateString()])
                     if (txn) {
                         let wait = txn.wait()
@@ -120,7 +118,6 @@ export default function Main() {
         } catch (error) {
             setPublishing(false)
             setPublished(false)
-        }
         }
     }
 
