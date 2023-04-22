@@ -5,7 +5,7 @@ function connectContract() {
     const contractAddress = "0x8632bF5830274db1A43cDc910aDCA981Db6ef0E8"
     let contract
     try {
-        const { ethereum } = window
+        const { ethereum }: any = window
         const { abi } = contractAbi
         if (ethereum) {
             const provider = new ethers.providers.Web3Provider(ethereum)

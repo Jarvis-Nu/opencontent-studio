@@ -1,4 +1,4 @@
-interface Window {
+export interface Window {
     // pick one
     ethereum: EthereumProvider
     // ethereum: ExternalProvider
