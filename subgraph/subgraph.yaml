@@ -1,0 +1,24 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: OpenContent
+    network: optimism-goerli
+    source:
+      address: "0x8632bF5830274db1A43cDc910aDCA981Db6ef0E8"
+      abi: OpenContent
+      startBlock: 8343465
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Post
+      abis:
+        - name: OpenContent
+          file: ./abis/OpenContent.json
+      eventHandlers:
+        - event: Post(string[],address)
+          handler: handlePost
+      file: ./src/open-content.ts

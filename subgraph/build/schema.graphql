@@ -1,0 +1,14 @@
+type Post @entity(immutable: true) {
+  id: Bytes!
+  name: String!
+  description: String!
+  postThumbnailUrl: String!
+  authorName: String!
+  authorThumbnailUrl: String!
+  content: String!
+  date: String!
+  owner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
