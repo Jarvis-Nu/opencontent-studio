@@ -22,7 +22,6 @@ export default function Main() {
     const [authorThumbnailType, setAuthorThumbnailType] = useState("")
     const [authorThumbnailPlaceholder, setAuthorThumbnailPlaceholder] = useState("")
     const [postThumbnailPlaceholder, setPostThumbnailPlaceholder] = useState("")
-    const [thumbnailCid, setThumbnailCid] = useState("")
     const [content, setContent] = useState("")
     const [publishing, setPublishing] = useState(false)
     const [published, setPublished] = useState(false)
