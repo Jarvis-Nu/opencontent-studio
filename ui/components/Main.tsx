@@ -86,13 +86,14 @@ export default function Main() {
 
     async function publishContent() {
         setPublishing(true)
-        await uploadThumbnails().then(async() => {
+        await uploadThumbnails().then(async(cid) => {
             const contract = connectContract()
+            console.log(cid)
             try {
                 if(contract) {
                     setPublishing(true)
-                    let postThumbnailUrl = "https://"+thumbnailCid+".ipfs.w3s.link/"+postThumbnailName
-                    let authorThumbnailUrl = "https://"+thumbnailCid+".ipfs.w3s.link/"+authorThumbnailName
+                    let postThumbnailUrl = "https://"+cid+".ipfs.w3s.link/"+postThumbnailName
+                    let authorThumbnailUrl = "https://"+cid+".ipfs.w3s.link/"+authorThumbnailName
                     const date = new Date()
                     const txn = await contract.createNewPost([name, description, postThumbnailUrl, authorName, authorThumbnailUrl, content, date.toLocaleDateString()])
                     if (txn) {
