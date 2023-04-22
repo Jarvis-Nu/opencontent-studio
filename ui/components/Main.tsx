@@ -87,7 +87,6 @@ export default function Main() {
         setPublishing(true)
         await uploadThumbnails().then(async(cid) => {
             const contract = connectContract()
-            console.log(cid)
             try {
                 if(contract) {
                     setPublishing(true)

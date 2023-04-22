@@ -8,7 +8,7 @@ const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 export default function Preview({ post }: any) {
     return (
-        <div className="flex justify-center bg-black !text-white">
+        <div className="flex justify-center bg-black !text-white w-full min-h-screen">
             <Head>
                 <title>{post[0]?.name}</title>
                 <meta name="description" content={post[0]?.description} />
