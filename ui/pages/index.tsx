@@ -18,7 +18,7 @@ export default function Home() {
           <TopNavigation />
         </div>
         <div className="flex w-full">
-          <div className="w-full max-w-xs max-h-screen overflow-y-scroll custom-scrollbar scrollbar-thin scrollbar-track-black scrollbar-thumb-gray-500 scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+          <div className="w-full max-w-xs max-h-[calc(100vh-95px)] overflow-y-scroll custom-scrollbar scrollbar-thin scrollbar-track-black scrollbar-thumb-gray-500 scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
             <SideNavigation />
           </div>
           <div className="flex flex-col items-center w-full max-h-screen px-10 py-5 overflow-y-scroll custom-scrollbar scrollbar-thin scrollbar-track-black scrollbar-thumb-gray-500">

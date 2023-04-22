@@ -46,6 +46,6 @@ export default function SideNavigation() {
         return <Empty />
     }
     else {
-        return <div className="w-full h-full px-5 border-r border-gray-500"><PostList data={posts} /></div>
+        return <div className="w-full min-h-full px-5 border-r border-gray-500"><PostList data={posts} /></div>
     }
 }
