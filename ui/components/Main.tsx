@@ -86,10 +86,10 @@ export default function Main() {
 
     async function publishContent() {
         setPublishing(true)
-        await uploadThumbnails()
-        const contract = connectContract()
+        await uploadThumbnails().then(async() => {
+            const contract = connectContract()
             try {
-                if(contract && thumbnailCid) {
+                if(contract) {
                     setPublishing(true)
                     let postThumbnailUrl = "https://"+thumbnailCid+".ipfs.w3s.link/"+postThumbnailName
                     let authorThumbnailUrl = "https://"+thumbnailCid+".ipfs.w3s.link/"+authorThumbnailName
@@ -115,10 +115,12 @@ export default function Main() {
             else {
                 setPublishing(false)
             }
-        } catch (error) {
-            setPublishing(false)
-            setPublished(false)
-        }
+            } catch (error) {
+                setPublishing(false)
+                setPublished(false)
+            }
+        })
+        
     }
 
     function disableButton() {
